@@ -29,7 +29,7 @@ func main() {
 	minutepos := left + 41
 	secondpos := left + 53
 
-	interruptHandling(-1, 0) // Clean up and end on SIGTERM
+	interruptHandling(r-1, 0) // Clean up and end on SIGTERM
 
 	for {
 		now := time.Now()
