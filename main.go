@@ -24,7 +24,7 @@ func main() {
 	hideCursor()
 
 	top := r/2 - 2
-	left := c/2 - 39
+	left := c/2 - 37
 	move(top, left)
 	fmt.Printf("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
 	move(top+1, left)
