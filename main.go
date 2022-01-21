@@ -2,11 +2,22 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"time"
 )
 
 func main() {
-	end, _ := time.Parse(time.RFC3339, "2029-07-23T00:46:03+00:00")
+	resp, err := query()
+	if err != nil {
+		panic(err)
+	}
+
+	if resp.Status != "success" {
+		fmt.Printf("Query failure: %s\n", resp.Status)
+		os.Exit(1)
+	}
+
+	end := resp.Data.Modules["carbon_deadline_1"].Timestamp
 
 	r, c := initialize()
 	clear()
