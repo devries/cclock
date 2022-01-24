@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"os"
+	"os/signal"
+	"syscall"
 	"time"
 )
 
@@ -18,7 +20,10 @@ func main() {
 	}
 
 	end := resp.Data.Modules["carbon_deadline_1"].Timestamp
+	runClock(end)
+}
 
+func runClock(end time.Time) {
 	r, c := initialize()
 	clear()
 	hideCursor()
@@ -42,6 +47,10 @@ func main() {
 
 	interruptHandling(r-1, 0) // Clean up and end on SIGTERM
 
+	sigChan := make(chan os.Signal)
+
+	signal.Notify(sigChan, syscall.SIGWINCH)
+
 	for {
 		now := time.Now()
 		cdur := getDifference(now, end)
@@ -57,9 +66,10 @@ func main() {
 		move(top+2, secondpos)
 		fmt.Printf("%2d", cdur.Seconds)
 
-		time.Sleep(50 * time.Millisecond)
+		select {
+		case <-sigChan:
+			runClock(end)
+		case <-time.After(50 * time.Millisecond):
+		}
 	}
-
-	// move(r-1, 0)
-	// cleanup()
 }
