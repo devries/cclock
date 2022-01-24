@@ -20,11 +20,17 @@ func main() {
 	}
 
 	end := resp.Data.Modules["carbon_deadline_1"].Timestamp
-	runClock(end)
+
+	initialize()
+
+	sigChan := make(chan os.Signal)
+	signal.Notify(sigChan, os.Interrupt, syscall.SIGTERM, syscall.SIGWINCH)
+
+	runClock(end, sigChan)
 }
 
-func runClock(end time.Time) {
-	r, c := initialize()
+func runClock(end time.Time, sigChan <-chan os.Signal) {
+	r, c := resize()
 	clear()
 	hideCursor()
 
@@ -45,12 +51,6 @@ func runClock(end time.Time) {
 	minutepos := left + 41
 	secondpos := left + 53
 
-	interruptHandling(r-1, 0) // Clean up and end on SIGTERM
-
-	sigChan := make(chan os.Signal)
-
-	signal.Notify(sigChan, syscall.SIGWINCH)
-
 	for {
 		now := time.Now()
 		cdur := getDifference(now, end)
@@ -67,8 +67,14 @@ func runClock(end time.Time) {
 		fmt.Printf("%2d", cdur.Seconds)
 
 		select {
-		case <-sigChan:
-			runClock(end)
+		case s := <-sigChan:
+			if s == syscall.SIGWINCH {
+				runClock(end, sigChan)
+			} else {
+				move(r-1, 0)
+				cleanup()
+				os.Exit(0)
+			}
 		case <-time.After(50 * time.Millisecond):
 		}
 	}
