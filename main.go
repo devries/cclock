@@ -26,7 +26,9 @@ func main() {
 	sigChan := make(chan os.Signal)
 	signal.Notify(sigChan, os.Interrupt, syscall.SIGTERM, syscall.SIGWINCH)
 
-	runClock(end, sigChan)
+	for {
+		runClock(end, sigChan)
+	}
 }
 
 func runClock(end time.Time, sigChan <-chan os.Signal) {
@@ -69,7 +71,7 @@ func runClock(end time.Time, sigChan <-chan os.Signal) {
 		select {
 		case s := <-sigChan:
 			if s == syscall.SIGWINCH {
-				runClock(end, sigChan)
+				return
 			} else {
 				move(r-1, 0)
 				cleanup()
