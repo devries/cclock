@@ -36,22 +36,63 @@ func runClock(end time.Time, sigChan <-chan os.Signal) {
 	clear()
 	hideCursor()
 
-	top := r/2 - 2
-	left := c/2 - 37
-	move(top, left)
-	fmt.Printf("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
-	move(top+1, left)
-	fmt.Printf("┃ Time to act before we reach irreversible 1.5\u00b0C global temperature rise ┃")
-	move(top+2, left)
-	fmt.Printf("┃           X years, XXX days, XX hours, XX minutes, XX seconds          ┃")
-	move(top+3, left)
-	fmt.Printf("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
+	var top, left, yrpos, daypos, hourpos, minutepos, secondpos int
 
-	yrpos := left + 12
-	daypos := left + 21
-	hourpos := left + 31
-	minutepos := left + 41
-	secondpos := left + 53
+	switch {
+	case c < 57:
+		top = r/2 - 2
+		left = c/2 - 19
+		move(top, left)
+		fmt.Printf("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
+		move(top+1, left)
+		fmt.Printf("┃             Time to act             ┃")
+		move(top+2, left)
+		fmt.Printf("┃ X yr, XXX dy, XX hr, XX min, XX sec ┃")
+		move(top+3, left)
+		fmt.Printf("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
+
+		yrpos = left + 2
+		daypos = left + 8
+		hourpos = left + 16
+		minutepos = left + 23
+		secondpos = left + 31
+
+	case c < 76:
+		top = r/2 - 2
+		left = c/2 - 27
+		move(top, left)
+		fmt.Printf("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
+		move(top+1, left)
+		fmt.Printf("┃                     Time to act                     ┃")
+		move(top+2, left)
+		fmt.Printf("┃ X years, XXX days, XX hours, XX minutes, XX seconds ┃")
+		move(top+3, left)
+		fmt.Printf("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
+
+		yrpos = left + 2
+		daypos = left + 11
+		hourpos = left + 21
+		minutepos = left + 31
+		secondpos = left + 43
+
+	default:
+		top = r/2 - 2
+		left = c/2 - 37
+		move(top, left)
+		fmt.Printf("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
+		move(top+1, left)
+		fmt.Printf("┃ Time to act before we reach irreversible 1.5\u00b0C global temperature rise ┃")
+		move(top+2, left)
+		fmt.Printf("┃           X years, XXX days, XX hours, XX minutes, XX seconds          ┃")
+		move(top+3, left)
+		fmt.Printf("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
+
+		yrpos = left + 12
+		daypos = left + 21
+		hourpos = left + 31
+		minutepos = left + 41
+		secondpos = left + 53
+	}
 
 	for {
 		now := time.Now()
