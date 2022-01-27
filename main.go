@@ -41,21 +41,21 @@ func runClock(end time.Time, sigChan <-chan os.Signal) {
 	switch {
 	case c < 57:
 		top = r/2 - 2
-		left = c/2 - 19
+		left = c/2 - 17
 		move(top, left)
-		fmt.Printf("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
+		fmt.Printf("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")
 		move(top+1, left)
-		fmt.Printf("┃             Time to act             ┃")
+		fmt.Printf("┃           Time to act           ┃")
 		move(top+2, left)
-		fmt.Printf("┃ X yr, XXX dy, XX hr, XX min, XX sec ┃")
+		fmt.Printf("┃ X yr XXX dy XX hr XX min XX sec ┃")
 		move(top+3, left)
-		fmt.Printf("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
+		fmt.Printf("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")
 
 		yrpos = left + 2
-		daypos = left + 8
-		hourpos = left + 16
-		minutepos = left + 23
-		secondpos = left + 31
+		daypos = left + 7
+		hourpos = left + 14
+		minutepos = left + 20
+		secondpos = left + 27
 
 	case c < 76:
 		top = r/2 - 2
